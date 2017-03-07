@@ -22,7 +22,6 @@ app.service("schedulerService", function() {
       }
       if(sameDays){
         //convert
-		console.log("This is a test" + course.start_time);
         var student_course_start = new Date(Date.parse("2001/01/01 " + course.start_time));
         var student_course_end = new Date(Date.parse("2001/01/01 " + course.end_time));
         // if course starts in middle or ends in middle of given class, then student is busy
