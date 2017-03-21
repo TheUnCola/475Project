@@ -100,7 +100,7 @@ app.controller('addCourseCtrl', ['$scope', 'firebaseService', 'authService', fun
           $scope.$apply();
           console.log(result);
         }, function(error) {
-          toastr.error("Failed to add");
+          toastr.error("Firebase error, please ensure that all fields are filled");
           console.log(error);
         });
       }
