@@ -26,7 +26,7 @@ app.controller('coursesCtrl', ['$scope', 'firebaseService', 'authService', 'cour
     $scope.currentSection = section;
     $scope.currentStudents = $scope.students.slice();
 	console.log("Current students from courses-controller: ");
-	console.log(currentStudents);
+	console.log($scope.currentStudents);
     firebaseService.getCandidates(course.firebaseId, function(assignments) {
       $scope.currentAssignments = assignments;
 	  console.log("Get candidates");
