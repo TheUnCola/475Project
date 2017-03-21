@@ -104,6 +104,7 @@ app.controller('coursesCtrl', ['$scope', 'firebaseService', 'authService', 'cour
           }
           if(sameDays){
             //convert
+			console.log("This is a test" + course_start);
             var student_course_start = new Date(Date.parse("2001/01/01 " + student.schedule[j].start_time));
             var student_course_end = new Date(Date.parse("2001/01/01 " + student.schedule[j].end_time));
             // if course starts in middle or ends in middle of given class, then student is busy

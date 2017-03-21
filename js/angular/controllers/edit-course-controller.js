@@ -84,6 +84,7 @@ app.controller('editCourseCtrl', ['$scope', '$location', '$routeParams', 'fireba
     firebaseService.removeCourse($scope.course.firebaseId, function(result) {
       toastr.success("Removed course");
       $location.path("/courses");
+      $scope.$apply();
       console.log(result);
       firebaseService.removeCourseFromAssignments($scope.course.firebaseId, function(result) {
         toastr.success("Removed Course's Assignments");
