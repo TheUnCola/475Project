@@ -77,9 +77,13 @@ app.controller('addCourseCtrl', ['$scope', 'firebaseService', 'authService', fun
       console.log("This should");
       count = 0;
       for(i in section.days){count++;}
-      console.log("count is" +count);
+      if(count == 0){
+        toastr.error("Section " +section.sectionID +" days not checked");
+        return false;
+      }
       if (section.sectionID === "" || section.instructor === "" || section.startTime === "" || section.endTime === "" ||
           section.undergradTAsNeeded < 0 || section.gradTAsNeeded < 0 || section.undergradLAsNeeded < 0) {
+            toastr.error("Section " +section.sectionID +" fields are not filled");
             return false;
       }
     }
@@ -106,9 +110,6 @@ app.controller('addCourseCtrl', ['$scope', 'firebaseService', 'authService', fun
           toastr.error("Failed to submit! Please ensure that all fields are filled");
           console.log(error);
         });
-      }
-      else {
-        toastr.error("Required Fields Not Filled");
       }
   };
 
