@@ -74,6 +74,7 @@ app.controller('addCourseCtrl', ['$scope', 'firebaseService', 'authService', fun
   function areReqSectionFieldsFilled() {
     if($scope.course.sections.length == 0){
       toastr.error("Please add a section");
+      return false;
     }
     for (var i = 0; i < $scope.course.sections.length; i++) {
       var section = $scope.course.sections[i];
