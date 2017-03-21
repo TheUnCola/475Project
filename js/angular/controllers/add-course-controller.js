@@ -75,7 +75,9 @@ app.controller('addCourseCtrl', ['$scope', 'firebaseService', 'authService', fun
     for (var i = 0; i < $scope.course.sections.length; i++) {
       var section = $scope.course.sections[i];
       console.log("This should");
-      console.log(section.days.keys());
+      count = 0;
+      for(i in section.days){count++;}
+      console.log("count is" +count);
       if (section.sectionID === "" || section.instructor === "" || section.startTime === "" || section.endTime === "" ||
           section.undergradTAsNeeded < 0 || section.gradTAsNeeded < 0 || section.undergradLAsNeeded < 0) {
             return false;
