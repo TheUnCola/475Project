@@ -74,7 +74,7 @@ app.controller('addCourseCtrl', ['$scope', 'firebaseService', 'authService', fun
   function areReqSectionFieldsFilled() {
     for (var i = 0; i < $scope.course.sections.length; i++) {
       var section = $scope.course.sections[i];
-      console.log(section.days);
+      console.log("This should "+section.days);
       if (section.sectionID === "" || section.instructor === "" || section.startTime === "" || section.endTime === "" ||
           section.undergradTAsNeeded < 0 || section.gradTAsNeeded < 0 || section.undergradLAsNeeded < 0) {
             return false;
