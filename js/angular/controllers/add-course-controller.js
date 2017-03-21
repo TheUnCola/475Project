@@ -81,14 +81,14 @@ app.controller('addCourseCtrl', ['$scope', 'firebaseService', 'authService', fun
       console.log("This should");
       count = 0;
       for(i in section.days){count++;}
-      if(count == 0){
-        toastr.error("Section " +section.sectionID +" days not checked");
-        return false;
-      }
       if (section.sectionID === "" || section.instructor === "" || section.startTime === "" || section.endTime === "" ||
           section.undergradTAsNeeded < 0 || section.gradTAsNeeded < 0 || section.undergradLAsNeeded < 0) {
             toastr.error("Section " +section.sectionID +" fields are not filled");
             return false;
+      }
+      if(count == 0){
+        toastr.error("Section " +section.sectionID +" days not checked");
+        return false;
       }
     }
     return true;
