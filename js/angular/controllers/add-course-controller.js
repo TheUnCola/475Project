@@ -17,7 +17,7 @@ app.controller('addCourseCtrl', ['$scope', 'firebaseService', 'authService', fun
     else {
       var result = change + " " + "AM";
       console.log("current undefined!")
-      console.log(result);
+      //console.log(result);
       return result;
     }
   };
@@ -25,7 +25,7 @@ app.controller('addCourseCtrl', ['$scope', 'firebaseService', 'authService', fun
   $scope.changeAMorPM = function(current, change) {
     if (typeof current != 'undefined') {
       var result = current.split(' ')[0] + " " + change;
-      console.log(result);
+      //console.log(result);
       return result;
     }
     else {
