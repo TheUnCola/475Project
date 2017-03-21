@@ -11,7 +11,7 @@ app.controller('addCourseCtrl', ['$scope', 'firebaseService', 'authService', fun
   $scope.changeTime = function(current, change) {
     if (typeof current != 'undefined' && current != "") {
       var result = change + " " + current.split(' ')[1];
-      console.log(result);
+      //console.log(result);
       return result;
     }
     else {
