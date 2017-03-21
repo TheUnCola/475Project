@@ -100,7 +100,7 @@ app.controller('addCourseCtrl', ['$scope', 'firebaseService', 'authService', fun
           $scope.$apply();
           console.log(result);
         }, function(error) {
-          toastr.error("Firebase error, please ensure that all fields are filled");
+          toastr.error("Failed to submit! Please ensure that all fields are filled");
           console.log(error);
         });
       }
