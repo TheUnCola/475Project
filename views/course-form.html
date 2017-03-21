@@ -3,7 +3,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label>Course ID</label>
-                <input type="text" class="form-control" placeholder="Course ID" ng-model="course.courseID">
+                <input type="text" class="form-control" placeholder="Course ID" ng-model="course.courseID" required>
             </div>
         </div>
         <div class="col-md-6">
@@ -20,12 +20,12 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label>Section ID</label>
-                    <input type="text" class="form-control" placeholder="Section ID" ng-model="section.sectionID">
+                    <input type="text" class="form-control" placeholder="Section ID" ng-model="section.sectionID" required>
                 </div>
                 <div class="row">
                     <div class="col-md-8 form-group">
                         <label>Start Time</label>
-                        <input type="text" class="form-control" placeholder="00:00" maxlength="5" ng-model="start_time" ng-init="start_time = initTime(section.startTime)" ng-change="section.startTime = changeTime(section.startTime, start_time)">
+                        <input type="text" class="form-control" placeholder="00:00" maxlength="5" ng-model="start_time" ng-init="start_time = initTime(section.startTime)" ng-change="section.startTime = changeTime(section.startTime, start_time)" required>
                     </div>
                     <div class="col-md-4">
                         <label>AM/PM</label>
@@ -43,12 +43,12 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label>Instructor</label>
-                    <input type="text" class="form-control" placeholder="Instructor" ng-model="section.instructor">
+                    <input type="text" class="form-control" placeholder="Instructor" ng-model="section.instructor" required>
                 </div>
                 <div class="row">
                     <div class="col-md-8 form-group">
                         <label>End Time</label>
-                        <input type="text" class="form-control" placeholder="00:00" maxlength="5" ng-model="end_time" ng-init="end_time = initTime(section.endTime)" ng-change="section.endTime = changeTime(section.endTime, end_time)">
+                        <input type="text" class="form-control" placeholder="00:00" maxlength="5" ng-model="end_time" ng-init="end_time = initTime(section.endTime)" ng-change="section.endTime = changeTime(section.endTime, end_time)" required>
                     </div>
                     <div class="col-md-4">
                         <label>AM/PM</label>
