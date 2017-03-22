@@ -250,6 +250,7 @@ app.service("firebaseService", function() {
 		  type: "GET",
 		  success: function(result){
 			console.log(result);
+			return result;
 		    }});
 //     return db.ref(`assignments/${courseID}/candidates`).orderByKey().once("value")
 //     .then(function(snapshot) {
