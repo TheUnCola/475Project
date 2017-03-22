@@ -246,19 +246,13 @@ app.service("firebaseService", function() {
   // returns all the studenIDs of the candidate choices for the given firebase courseID
   this.getCandidates = function(courseID, success, failure) {  
     	console.log("FirebaseService.getCandidates, before return");
-	  $.ajax({url: "https://cisc475-ta-database.firebaseio.com/assignments/"+courseID+"/candidates.json",
-		  type: "GET",
-		  success: function(result){
-			console.log(result);
-			return result;
-		    }});
-//     return db.ref(`assignments/${courseID}/candidates`).orderByKey().once("value")
-//     .then(function(snapshot) {
-// 	  console.log("Success to follow");
-//       success(assignmentObjectsToArray(snapshot.val()));
-//     }, function(error) {
-//       failure(error);
-//     });
+    return db.ref(`assignments/${courseID}/candidates`).orderByKey().once("value")
+    .then(function(snapshot) {
+	  console.log("Success to follow");
+      success(assignmentObjectsToArray(snapshot.val()));
+    }, function(error) {
+      failure(error);
+    });
   };
 
   // returns all the studentIDs of the final choices for the given firebase courseID
