@@ -249,13 +249,13 @@ app.service("firebaseService", function() {
 	  $.ajax({url: "https://cisc475-ta-database.firebaseio.com/assignments/-KflEi8CEXDjSfTEyGaV/candidates", success: function(result){
 			console.log(result);
 		    }});
-    return db.ref(`assignments/${courseID}/candidates`).orderByKey().once("value")
-    .then(function(snapshot) {
-	  console.log("Success to follow");
-      success(assignmentObjectsToArray(snapshot.val()));
-    }, function(error) {
-      failure(error);
-    });
+//     return db.ref(`assignments/${courseID}/candidates`).orderByKey().once("value")
+//     .then(function(snapshot) {
+// 	  console.log("Success to follow");
+//       success(assignmentObjectsToArray(snapshot.val()));
+//     }, function(error) {
+//       failure(error);
+//     });
   };
 
   // returns all the studentIDs of the final choices for the given firebase courseID
