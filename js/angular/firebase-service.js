@@ -246,7 +246,9 @@ app.service("firebaseService", function() {
   // returns all the studenIDs of the candidate choices for the given firebase courseID
   this.getCandidates = function(courseID, success, failure) {  
     	console.log("FirebaseService.getCandidates, before return");
-	  console.log("assignments/"+courseID+"/candidates");
+	  $.ajax({url: "https://cisc475-ta-database.firebaseio.com/assignments/-KflEi8CEXDjSfTEyGaV/candidates", success: function(result){
+			console.log(result);
+		    }});
     return db.ref(`assignments/${courseID}/candidates`).orderByKey().once("value")
     .then(function(snapshot) {
 	  console.log("Success to follow");
