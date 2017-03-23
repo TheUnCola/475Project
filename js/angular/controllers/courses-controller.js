@@ -21,35 +21,62 @@ app.controller('coursesCtrl', ['$scope', 'firebaseService', 'authService', 'cour
     return res;
   };
 
-  $scope.launchModal = function(course, section) {    
-    $scope.currentCourse = course;
-    $scope.currentSection = section;
-    $scope.currentStudents = $scope.students.slice();
+//   $scope.launchModal = function(course, section) {    
+//     $scope.currentCourse = course;
+//     $scope.currentSection = section;
+//     $scope.currentStudents = $scope.students.slice();
+// 	console.log("Current students from courses-controller: ");
+//     //firebaseService.getCandidates(course.firebaseId, function(assignments) {
+// $.getJson({url: "https://cisc475-ta-database.firebaseio.com/assignments/"+course.firebaseId+"/candidates.json",
+// 		  type: "GET",
+// 		  success: function(result){
+//       	$scope.currentAssignments = result;
+// 	  console.log("Get candidates");
+//       for(var i = 0; i < $scope.currentStudents.length; i++) {
+//         var assigned = false;
+//         for(var j = 0; j < $scope.currentAssignments.length; j++) {
+//           if($scope.currentAssignments[j].section == section.sectionID && $scope.currentStudents[i].firebaseId == $scope.currentAssignments[j].studentId) {
+//             $scope.currentStudents[i].isAssigned = true;
+//             $scope.currentStudents[i].assignmentFbId = $scope.currentAssignments[j].firebaseId;
+//             assigned = true;
+//             break;
+//           }
+//         }
+//         if(!assigned) $scope.currentStudents[i].isAssigned = false;
+//       }
+//       $scope.$apply();
+//     }, function(error) {
+//       toastr.error("Something went wrong getting candidates");
+//     });
+// });
+  //};
+	
+$scope.launchModal = function(course, section) {    
+  $scope.currentCourse = course;
+  $scope.currentSection = section;
+  $scope.currentStudents = $scope.students.slice();
 	console.log("Current students from courses-controller: ");
     //firebaseService.getCandidates(course.firebaseId, function(assignments) {
-$.getJson({url: "https://cisc475-ta-database.firebaseio.com/assignments/"+course.firebaseId+"/candidates.json",
-		  type: "GET",
-		  success: function(result){
-      	$scope.currentAssignments = result;
-	  console.log("Get candidates");
-      for(var i = 0; i < $scope.currentStudents.length; i++) {
-        var assigned = false;
-        for(var j = 0; j < $scope.currentAssignments.length; j++) {
-          if($scope.currentAssignments[j].section == section.sectionID && $scope.currentStudents[i].firebaseId == $scope.currentAssignments[j].studentId) {
-            $scope.currentStudents[i].isAssigned = true;
-            $scope.currentStudents[i].assignmentFbId = $scope.currentAssignments[j].firebaseId;
-            assigned = true;
-            break;
+  $.getJSON({url: "https://cisc475-ta-database.firebaseio.com/assignments/"+course.firebaseId+"/candidates.json",
+  		  success: function(result){
+        	$scope.currentAssignments = result;
+          console.log("Get candidates");
+          for(var i = 0; i < $scope.currentStudents.length; i++) {
+            var assigned = false;
+            for(var j = 0; j < $scope.currentAssignments.length; j++) {
+              if($scope.currentAssignments[j].section == section.sectionID && $scope.currentStudents[i].firebaseId == $scope.currentAssignments[j].studentId) {
+                $scope.currentStudents[i].isAssigned = true;
+                $scope.currentStudents[i].assignmentFbId = $scope.currentAssignments[j].firebaseId;
+                assigned = true;
+                break;
+              }
+            }
+            if(!assigned) $scope.currentStudents[i].isAssigned = false;
           }
+          $scope.$apply();
         }
-        if(!assigned) $scope.currentStudents[i].isAssigned = false;
-      }
-      $scope.$apply();
-    }, function(error) {
-      toastr.error("Something went wrong getting candidates");
-    });
-});
-  //};
+  });
+};
 
   $scope.removeStudent = function(fbId) {
     for(var i = 0; i < $scope.currentStudents.length; i++) {
