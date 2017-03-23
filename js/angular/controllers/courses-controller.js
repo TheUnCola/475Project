@@ -26,9 +26,11 @@ app.controller('coursesCtrl', ['$scope', 'firebaseService', 'authService', 'cour
     $scope.currentSection = section;
     $scope.currentStudents = $scope.students.slice();
 	console.log("Current students from courses-controller: ");
-	console.log($scope.currentStudents);
-    firebaseService.getCandidates(course.firebaseId, function(assignments) {
-      $scope.currentAssignments = assignments;
+    //firebaseService.getCandidates(course.firebaseId, function(assignments) {
+$.getJson({url: "https://cisc475-ta-database.firebaseio.com/assignments/"+course.firebaseId+"/candidates.json",
+		  type: "GET",
+		  success: function(result){
+      	$scope.currentAssignments = result;
 	  console.log("Get candidates");
       for(var i = 0; i < $scope.currentStudents.length; i++) {
         var assigned = false;
@@ -46,7 +48,8 @@ app.controller('coursesCtrl', ['$scope', 'firebaseService', 'authService', 'cour
     }, function(error) {
       toastr.error("Something went wrong getting candidates");
     });
-  };
+});
+  //};
 
   $scope.removeStudent = function(fbId) {
     for(var i = 0; i < $scope.currentStudents.length; i++) {
