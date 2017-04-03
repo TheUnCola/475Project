@@ -111,6 +111,7 @@ $scope.launchModal = function(course, section) {
   };
 
   $scope.getStudentsAvailable = function(startTime, endTime, days, isChecked){
+    console.log("Getting students available");
     if(isChecked){
       for(var i = 0; i < $scope.currentStudents.length; i++) {
         var student = $scope.currentStudents[i];
