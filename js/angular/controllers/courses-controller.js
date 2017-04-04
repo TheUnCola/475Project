@@ -57,27 +57,7 @@ $scope.launchModal = function(course, section) {
   $scope.currentStudents = $scope.students.slice();
 	console.log("Current students from courses-controller: ");
     //firebaseService.getCandidates(course.firebaseId, function(assignments) {
-  /*$.getJSON({url: "https://cisc475-ta-database.firebaseio.com/assignments/"+course.firebaseId+"/candidates.json",
-  		  success: function(result){
-        	$scope.currentAssignments = result;
-          console.log("Get candidates");
-          for(var i = 0; i < $scope.currentStudents.length; i++) {
-            var assigned = false;
-            for(var j = 0; j < $scope.currentAssignments.length; j++) {
-              if($scope.currentAssignments[j].section == section.sectionID && $scope.currentStudents[i].firebaseId == $scope.currentAssignments[j].studentId) {
-                $scope.currentStudents[i].isAssigned = true;
-                $scope.currentStudents[i].assignmentFbId = $scope.currentAssignments[j].firebaseId;
-                assigned = true;
-                break;
-              }
-            }
-            if(!assigned) $scope.currentStudents[i].isAssigned = false;
-          }
-	 
-          $scope.$apply();
-        }
-  });*/
-  for(var i = 0; i < $scope.currentStudents.length; i++) {
+	for(var i = 0; i < $scope.currentStudents.length; i++) {
         var student = $scope.currentStudents[i];
 		var days = $scope.currentSection.days;
         // should be in form... "2013/05/29 12:30 PM"
@@ -113,6 +93,27 @@ $scope.launchModal = function(course, section) {
 
         }
       }
+	  $.getJSON({url: "https://cisc475-ta-database.firebaseio.com/assignments/"+course.firebaseId+"/candidates.json",
+  		  success: function(result){
+        	$scope.currentAssignments = result;
+          console.log("Get candidates");
+          for(var i = 0; i < $scope.currentStudents.length; i++) {
+            var assigned = false;
+            for(var j = 0; j < $scope.currentAssignments.length; j++) {
+              if($scope.currentAssignments[j].section == section.sectionID && $scope.currentStudents[i].firebaseId == $scope.currentAssignments[j].studentId) {
+                $scope.currentStudents[i].isAssigned = true;
+                $scope.currentStudents[i].assignmentFbId = $scope.currentAssignments[j].firebaseId;
+                assigned = true;
+                break;
+              }
+            }
+            if(!assigned) $scope.currentStudents[i].isAssigned = false;
+          }
+		console.log("Applying scope");
+          $scope.$apply();
+		  console.log("Scope applied");
+        }
+  });
 };
 
   $scope.removeStudent = function(fbId) {
