@@ -21,32 +21,100 @@ app.controller('coursesCtrl', ['$scope', 'firebaseService', 'authService', 'cour
     return res;
   };
 
-  $scope.launchModal = function(course, section) {    
-    $scope.currentCourse = course;
-    $scope.currentSection = section;
-    $scope.currentStudents = $scope.students.slice();
+//   $scope.launchModal = function(course, section) {    
+//     $scope.currentCourse = course;
+//     $scope.currentSection = section;
+//     $scope.currentStudents = $scope.students.slice();
+// 	console.log("Current students from courses-controller: ");
+//     //firebaseService.getCandidates(course.firebaseId, function(assignments) {
+// $.getJson({url: "https://cisc475-ta-database.firebaseio.com/assignments/"+course.firebaseId+"/candidates.json",
+// 		  type: "GET",
+// 		  success: function(result){
+//       	$scope.currentAssignments = result;
+// 	  console.log("Get candidates");
+//       for(var i = 0; i < $scope.currentStudents.length; i++) {
+//         var assigned = false;
+//         for(var j = 0; j < $scope.currentAssignments.length; j++) {
+//           if($scope.currentAssignments[j].section == section.sectionID && $scope.currentStudents[i].firebaseId == $scope.currentAssignments[j].studentId) {
+//             $scope.currentStudents[i].isAssigned = true;
+//             $scope.currentStudents[i].assignmentFbId = $scope.currentAssignments[j].firebaseId;
+//             assigned = true;
+//             break;
+//           }
+//         }
+//         if(!assigned) $scope.currentStudents[i].isAssigned = false;
+//       }
+//       $scope.$apply();
+//     }, function(error) {
+//       toastr.error("Something went wrong getting candidates");
+//     });
+// });
+  //};
+	
+$scope.launchModal = function(course, section) {    
+  $scope.currentCourse = course;
+  $scope.currentSection = section;
+  $scope.currentStudents = $scope.students.slice();
 	console.log("Current students from courses-controller: ");
-	console.log($scope.currentStudents);
-    firebaseService.getCandidates(course.firebaseId, function(assignments) {
-      $scope.currentAssignments = assignments;
-	  console.log("Get candidates");
-      for(var i = 0; i < $scope.currentStudents.length; i++) {
-        var assigned = false;
-        for(var j = 0; j < $scope.currentAssignments.length; j++) {
-          if($scope.currentAssignments[j].section == section.sectionID && $scope.currentStudents[i].firebaseId == $scope.currentAssignments[j].studentId) {
-            $scope.currentStudents[i].isAssigned = true;
-            $scope.currentStudents[i].assignmentFbId = $scope.currentAssignments[j].firebaseId;
-            assigned = true;
-            break;
+    //firebaseService.getCandidates(course.firebaseId, function(assignments) {
+	for(var i = 0; i < $scope.currentStudents.length; i++) {
+        var student = $scope.currentStudents[i];
+		var days = $scope.currentSection.days;
+        // should be in form... "2013/05/29 12:30 PM"
+        var course_start = new Date(Date.parse("2001/01/01 " + section.startTime));
+        var course_end = new Date(Date.parse("2001/01/01 " + section.endTime));
+        var sameDays = false;
+        // for each course in student.schedule
+        for (var j=0; j < student.schedule.length; j++){
+          // check if any input days intersect with course.days
+          for (var day in days){
+            for (var d in student.schedule[j].days){
+              if (day === d && days[day] && days[d]){
+                sameDays = true;
+              //  break;
+              }
+            }
+            if(sameDays){
+            //  break;
+            }
           }
+          if(sameDays){
+            //convert
+            var student_course_start = new Date(Date.parse("2001/01/01 " + student.schedule[j].start_time));
+            var student_course_end = new Date(Date.parse("2001/01/01 " + student.schedule[j].end_time));
+            // if course starts in middle or ends in middle of given class, then student is busy
+          //  console.log(course.endTime);
+            if((student_course_start <= course_end && student_course_start >= course_start) || (student_course_end >= course_start && student_course_end <= course_end)){
+              // remove from list
+              console.log("Found someone");
+              $scope.currentStudents.splice(i, 1);
+            }
+          }
+
         }
-        if(!assigned) $scope.currentStudents[i].isAssigned = false;
       }
-      $scope.$apply();
-    }, function(error) {
-      toastr.error("Something went wrong getting candidates");
-    });
-  };
+	  $.getJSON({url: "https://cisc475-ta-database.firebaseio.com/assignments/"+course.firebaseId+"/candidates.json",
+  		  success: function(result){
+        	$scope.currentAssignments = result;
+          console.log("Get candidates");
+          for(var i = 0; i < $scope.currentStudents.length; i++) {
+            var assigned = false;
+            for(var j = 0; j < $scope.currentAssignments.length; j++) {
+              if($scope.currentAssignments[j].section == section.sectionID && $scope.currentStudents[i].firebaseId == $scope.currentAssignments[j].studentId) {
+                $scope.currentStudents[i].isAssigned = true;
+                $scope.currentStudents[i].assignmentFbId = $scope.currentAssignments[j].firebaseId;
+                assigned = true;
+                break;
+              }
+            }
+            if(!assigned) $scope.currentStudents[i].isAssigned = false;
+          }
+		console.log("Applying scope");
+          $scope.$apply();
+		  console.log("Scope applied");
+        }
+  });
+};
 
   $scope.removeStudent = function(fbId) {
     for(var i = 0; i < $scope.currentStudents.length; i++) {
@@ -81,6 +149,7 @@ app.controller('coursesCtrl', ['$scope', 'firebaseService', 'authService', 'cour
   };
 
   $scope.getStudentsAvailable = function(startTime, endTime, days, isChecked){
+    console.log("Getting students available");
     if(isChecked){
       for(var i = 0; i < $scope.currentStudents.length; i++) {
         var student = $scope.currentStudents[i];

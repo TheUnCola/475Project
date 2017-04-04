@@ -11,7 +11,7 @@ app.controller('addCourseCtrl', ['$scope', 'firebaseService', 'authService', fun
   $scope.changeTime = function(current, change) {
     if (typeof current != 'undefined' && current != "") {
       var result = change + " " + current.split(' ')[1];
-      console.log(result);
+      //console.log(result);
       return result;
     }
     else {
@@ -72,12 +72,23 @@ app.controller('addCourseCtrl', ['$scope', 'firebaseService', 'authService', fun
   }
 
   function areReqSectionFieldsFilled() {
+    if($scope.course.sections.length == 0){
+      toastr.error("Please add a section");
+      return false;
+    }
     for (var i = 0; i < $scope.course.sections.length; i++) {
       var section = $scope.course.sections[i];
-      console.log("This should "+section.days.toString());
+      console.log("This should");
+      count = 0;
+      for(i in section.days){count++;}
       if (section.sectionID === "" || section.instructor === "" || section.startTime === "" || section.endTime === "" ||
           section.undergradTAsNeeded < 0 || section.gradTAsNeeded < 0 || section.undergradLAsNeeded < 0) {
+            toastr.error("Section " +section.sectionID +" fields are not filled");
             return false;
+      }
+      if(count == 0){
+        toastr.error("Section " +section.sectionID +" days not checked");
+        return false;
       }
     }
     return true;
@@ -100,12 +111,8 @@ app.controller('addCourseCtrl', ['$scope', 'firebaseService', 'authService', fun
           $scope.$apply();
           console.log(result);
         }, function(error) {
-          toastr.error("Failed to submit! Please ensure that all fields are filled");
           console.log(error);
         });
-      }
-      else {
-        toastr.error("Required Fields Not Filled");
       }
   };
 
