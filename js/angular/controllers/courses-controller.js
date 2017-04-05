@@ -68,13 +68,13 @@ $scope.launchModal = function(course, section) {
   var course_days = $scope.currentSection.days;
 	var c_start = new Date(Date.parse("2001/01/01 " + section.startTime) - 25 * 60000);
 	var c_end = new Date(Date.parse("2001/01/01 " + section.endTime) + 15 * 60000);
-	console.log("Course Start: " + c_start);
-	console.log("Course End: " + c_end);
-	console.log("Current students from courses-controller: ");
+	//console.log("Course Start: " + c_start);
+	//console.log("Course End: " + c_end);
+	//console.log("Current students from courses-controller: ");
 	for(var i = 0; i < $scope.currentStudents.length; i++) {
         var student = $scope.currentStudents[i];
 		var schedule = student.schedule;
-		console.log("student: " + student.first_name + " " + student.last_name + " #" + i);
+		//console.log("student: " + student.first_name + " " + student.last_name + " #" + i);
         // for each course in student.schedule, check if a course occurs in the same day
         for (var j=0; j < schedule.length; j++){
 		  if(intersects(course_days,schedule[j].days)) {
@@ -85,7 +85,7 @@ $scope.launchModal = function(course, section) {
 				|| (s_end >= c_start && s_end <= c_end) 
 				|| (s_end >= c_end && s_start <= c_start)){
 			  // remove from list
-			  console.log("Found someone: " + student.last_name + " Class: " + s_start + "-" + s_end);
+			  //console.log("Found someone: " + student.last_name + " Class: " + s_start + "-" + s_end);
 			  $scope.currentStudents.splice(i, 1);
 		  }
           }
@@ -96,7 +96,7 @@ $scope.launchModal = function(course, section) {
   		  //success: function(result){
 		firebaseService.getCandidates(course.firebaseId, function(assignments) {
         	$scope.currentAssignments = assignments;
-          console.log("Get candidates");
+          //console.log("Get candidates");
           for(var i = 0; i < $scope.currentStudents.length; i++) {
             var assigned = false;
             for(var j = 0; j < $scope.currentAssignments.length; j++) {
