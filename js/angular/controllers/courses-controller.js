@@ -27,6 +27,7 @@ app.controller('coursesCtrl', ['$scope', 'firebaseService', 'authService', 'cour
 			if(s_day == c_day) return true;
 		}
 	  }
+	  return false;
   }
 
 //   $scope.launchModal = function(course, section) {    
@@ -65,61 +66,36 @@ $scope.launchModal = function(course, section) {
   //$scope.currentStudents = $scope.students.slice();
   $scope.currentStudents = $scope.students;
   var course_days = $scope.currentSection.days;
-	// should be in form... "2013/05/29 12:30 PM"
-	var course_start = new Date(Date.parse("2001/01/01 " + section.startTime) - 25 * 60000);
-	var course_end = new Date(Date.parse("2001/01/01 " + section.endTime) + 15 * 60000);
-	console.log("Course Start: " + course_start);
-	console.log("Course End: " + course_end);
+	var c_start = new Date(Date.parse("2001/01/01 " + section.startTime) - 25 * 60000);
+	var c_end = new Date(Date.parse("2001/01/01 " + section.endTime) + 15 * 60000);
+	console.log("Course Start: " + c_start);
+	console.log("Course End: " + c_end);
 	console.log("Current students from courses-controller: ");
-    //firebaseService.getCandidates(course.firebaseId, function(assignments) {
 	for(var i = 0; i < $scope.currentStudents.length; i++) {
         var student = $scope.currentStudents[i];
 		var schedule = student.schedule;
 		console.log("student: " + student.first_name + " " + student.last_name + " #" + i);
-        var conflict = false;
-        // for each course in student.schedule
+        // for each course in student.schedule, check if a course occurs in the same day
         for (var j=0; j < schedule.length; j++){
-          // check if any input days intersect with course.days
-          /*for (var c_day in course_days){
-            for (var s_day in schedule[j].days){
-				//console.log("student: " + student.last_name + " s_day: "+s_day);
-				  if (c_day == s_day && course_days[c_day] && course_days[s_day] && !conflict){
-					//console.log(student.last_name + " Day: " + c_day);
-					var student_course_start = new Date(Date.parse("2001/01/01 " + student.schedule[j].start_time));
-					var student_course_end = new Date(Date.parse("2001/01/01 " + student.schedule[j].end_time));
-					//console.log("Same Day: " + student.last_name + " Class: " + student_course_start + "-" + student_course_end);
-					if((student_course_start <= course_end && student_course_start >= course_start) 
-						|| (student_course_end >= course_start && student_course_end <= course_end) 
-						|| (student_course_end >= course_end && student_course_start <= course_start)){
-					  // remove from list
-					  console.log("Found someone: " + student.last_name + " Class: " + student_course_start + "-" + student_course_end);
-					  $scope.currentStudents.splice(i, 1);
-					  conflict = true;
-					}
-				  } else {
-					  continue;
-				  }
-            }
-          }*/
-		  
 		  if(intersects(course_days,schedule[j].days)) {
-			var student_course_start = new Date(Date.parse("2001/01/01 " + student.schedule[j].start_time));
-			var student_course_end = new Date(Date.parse("2001/01/01 " + student.schedule[j].end_time));
-			//console.log("Same Day: " + student.last_name + " Class: " + student_course_start + "-" + student_course_end);
-			if((student_course_start <= course_end && student_course_start >= course_start) 
-				|| (student_course_end >= course_start && student_course_end <= course_end) 
-				|| (student_course_end >= course_end && student_course_start <= course_start)){
+			var s_start = new Date(Date.parse("2001/01/01 " + student.schedule[j].start_time));
+			var s_end = new Date(Date.parse("2001/01/01 " + student.schedule[j].end_time));
+			//console.log("Same Day: " + student.last_name + " Class: " + s_start + "-" + s_end);
+			if((s_start <= c_end && s_start >= c_start) 
+				|| (s_end >= c_start && s_end <= c_end) 
+				|| (s_end >= c_end && s_start <= c_start)){
 			  // remove from list
-			  console.log("Found someone: " + student.last_name + " Class: " + student_course_start + "-" + student_course_end);
+			  console.log("Found someone: " + student.last_name + " Class: " + s_start + "-" + s_end);
 			  $scope.currentStudents.splice(i, 1);
 		  }
           }
 
         }
       }
-	  /*$.getJSON({url: "https://cisc475-ta-database.firebaseio.com/assignments/"+course.firebaseId+"/candidates.json",
-  		  success: function(result){
-        	$scope.currentAssignments = result;
+	  //$.getJSON({url: "https://cisc475-ta-database.firebaseio.com/assignments/"+course.firebaseId+"/candidates.json",
+  		  //success: function(result){
+		firebaseService.getCandidates(course.firebaseId, function(assignments) {
+        	$scope.currentAssignments = assignments;
           console.log("Get candidates");
           for(var i = 0; i < $scope.currentStudents.length; i++) {
             var assigned = false;
@@ -136,8 +112,8 @@ $scope.launchModal = function(course, section) {
 		console.log("Applying scope");
           $scope.$apply();
 		  console.log("Scope applied");
-        }
-  });*/
+        });
+  //});
 };
 
   $scope.removeStudent = function(fbId) {
@@ -172,7 +148,7 @@ $scope.launchModal = function(course, section) {
     });
   };
 
-  $scope.getStudentsAvailable = function(startTime, endTime, days, isChecked){
+  /*$scope.getStudentsAvailable = function(startTime, endTime, days, isChecked){
     console.log("Getting students available");
     if(isChecked){
       for(var i = 0; i < $scope.currentStudents.length; i++) {
@@ -215,7 +191,7 @@ $scope.launchModal = function(course, section) {
     else{
       $scope.currentStudents = $scope.students.slice();
     }
-  }
+  }*/
 
   firebaseService.getCourses(function(courses) {
     $scope.courses = courses;
