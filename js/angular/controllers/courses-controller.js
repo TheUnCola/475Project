@@ -3,7 +3,7 @@ var app = angular.module('baseApp');
 app.controller('coursesCtrl', ['$scope', 'firebaseService', 'authService', 'courseTakenFilter', function($scope, firebaseService, authService, courseTakenFilter) {
   authService.checkUser();
 
-  $scope.courses = {};
+  $scope.courses = [];
   $scope.students = [];
 
   $scope.prettifyDays = function(days) { //MTWRF
@@ -109,9 +109,7 @@ $scope.launchModal = function(course, section) {
             }
             if(!assigned) $scope.currentStudents[i].isAssigned = false;
           }
-		console.log("Applying scope");
           $scope.$apply();
-		  console.log("Scope applied");
         });
   //});
 };
