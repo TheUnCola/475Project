@@ -20,6 +20,14 @@ app.controller('coursesCtrl', ['$scope', 'firebaseService', 'authService', 'cour
 
     return res;
   };
+  
+  function intersects(c_days,s_days) {
+	  for (var c_day in c_days){
+		for (var s_day in s_days) {
+			if(s_day == c_day) return true;
+		}
+	  }
+  }
 
 //   $scope.launchModal = function(course, section) {    
 //     $scope.currentCourse = course;
@@ -67,32 +75,45 @@ $scope.launchModal = function(course, section) {
 	for(var i = 0; i < $scope.currentStudents.length; i++) {
         var student = $scope.currentStudents[i];
 		var schedule = student.schedule;
-		console.log("student: " + student.last_name);
+		console.log("student: " + student.first_name + " " + student.last_name + " #" + i);
         var conflict = false;
         // for each course in student.schedule
         for (var j=0; j < schedule.length; j++){
           // check if any input days intersect with course.days
-          for (var c_day in course_days){
+          /*for (var c_day in course_days){
             for (var s_day in schedule[j].days){
-				console.log("student: " + student.last_name + " s_day: "+s_day);
-              if (c_day == s_day && course_days[c_day] && course_days[s_day] && !conflict){
-                
-				//console.log(student.last_name + " Day: " + c_day);
-				var student_course_start = new Date(Date.parse("2001/01/01 " + student.schedule[j].start_time));
-				var student_course_end = new Date(Date.parse("2001/01/01 " + student.schedule[j].end_time));
-				console.log("Same Day: " + student.last_name + " Class: " + student_course_start + "-" + student_course_end);
-				if((student_course_start <= course_end && student_course_start >= course_start) || (student_course_end >= course_start && student_course_end <= course_end) || (student_course_end >= course_start && student_course_start <= course_start)){
-				  // remove from list
-				  console.log("Found someone: " + student.last_name + " Class: " + student_course_start + "-" + student_course_end);
-				  $scope.currentStudents.splice(i, 1);
-				  conflict = true;
-				}
-              } else {
-				  continue;
-			  }
+				//console.log("student: " + student.last_name + " s_day: "+s_day);
+				  if (c_day == s_day && course_days[c_day] && course_days[s_day] && !conflict){
+					//console.log(student.last_name + " Day: " + c_day);
+					var student_course_start = new Date(Date.parse("2001/01/01 " + student.schedule[j].start_time));
+					var student_course_end = new Date(Date.parse("2001/01/01 " + student.schedule[j].end_time));
+					//console.log("Same Day: " + student.last_name + " Class: " + student_course_start + "-" + student_course_end);
+					if((student_course_start <= course_end && student_course_start >= course_start) 
+						|| (student_course_end >= course_start && student_course_end <= course_end) 
+						|| (student_course_end >= course_end && student_course_start <= course_start)){
+					  // remove from list
+					  console.log("Found someone: " + student.last_name + " Class: " + student_course_start + "-" + student_course_end);
+					  $scope.currentStudents.splice(i, 1);
+					  conflict = true;
+					}
+				  } else {
+					  continue;
+				  }
             }
+          }*/
+		  
+		  if(intersects(course_days,schedule[j].days)) {
+			var student_course_start = new Date(Date.parse("2001/01/01 " + student.schedule[j].start_time));
+			var student_course_end = new Date(Date.parse("2001/01/01 " + student.schedule[j].end_time));
+			//console.log("Same Day: " + student.last_name + " Class: " + student_course_start + "-" + student_course_end);
+			if((student_course_start <= course_end && student_course_start >= course_start) 
+				|| (student_course_end >= course_start && student_course_end <= course_end) 
+				|| (student_course_end >= course_end && student_course_start <= course_start)){
+			  // remove from list
+			  console.log("Found someone: " + student.last_name + " Class: " + student_course_start + "-" + student_course_end);
+			  $scope.currentStudents.splice(i, 1);
+		  }
           }
-          
 
         }
       }
