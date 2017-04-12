@@ -12,11 +12,12 @@
   <link rel="stylesheet" href="styles/main.css">
   <link rel="stylesheet" href="styles/form.css">
   <link rel="stylesheet" href="styles/courses.css">
+  <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 </head>
 
 <body ng-app="baseApp">
   <div ng-include="'views/nav.html'"></div>
-
+  
   <!-- Allows router to substitute partials -->
   <div class="container">
     <div id="error-container" class="alert alert-danger" role="alert">
@@ -51,6 +52,7 @@
   <script src="js/angular/models/CourseTaking-model.js"></script>
   <script src="js/angular/models/Grade-model.js"></script>
   <script src="js/angular/models/Course-model.js"></script>
+  <script src="js/angular/models/Assignment-model.js"></script>
   <script src="js/firebase-init.js"></script>
   <script src="js/angular/app.js"></script>
   <script src="js/angular/auth-service.js"></script>

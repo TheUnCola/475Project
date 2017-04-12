@@ -17,3 +17,19 @@ table.sections-table {
 table.sections-table tr:first-child th {
   border-top: 0px;
 }
+
+table.td {
+	white-space: nowrap;
+	overflow: hidden;
+	padding:0;
+}
+.table-stripeds tbody:nth-child(odd) tr,.table-stripeds tbody > tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+/*.loading {
+	background-image: url("https://udsa.nss.udel.edu/cs/SAPRD/cache/NEW_PS_LOGO_UDSIS_1.JPG");
+	display:none;
+}*/
+/*.modal-dialog {
+	display:none;
+}*/

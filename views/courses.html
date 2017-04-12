@@ -1,19 +1,17 @@
 <a class="btn btn-primary float-right" href="#/add-course">Add Course</a>
 <h1>Courses</h1>
-<div class="panel panel-default" ng-repeat="course in courses | orderBy:'+courseID'">
+<div class="panel panel-default" ng-repeat="(key,courselist) in courses ">
   <div class="panel-heading">
     <div class="row">
       <div class="col-md-6">
-        <h3 class="panel-title">{{course.courseID}}</h3>
-      </div>
-      <div class="col-md-6 align-right">
-        <a href="#/edit-course/{{course.firebaseId}}">Edit</a>
+        <h3 class="panel-title">{{key}}</h3>
       </div>
     </div>
   </div>
   <div class="panel-body">
-    <table class="table table-condensed table-striped sections-table">
-      <tr>
+    <table class="table table-condensed table-stripeds sections-table">
+      <thead>
+	  <tr>
         <th>Section</th>
         <th>Instructor</th>
         <th>Start</th>
@@ -23,7 +21,10 @@
         <th>Undergrad TAs</th>
         <th>Undergrad LAs</th>
         <th>Candidates</th>
+		<th>&nbsp;</th>
       </tr>
+	  </thead>
+	  <tbody ng-repeat="course in courselist">
       <tr ng-repeat="section in course.sections">
         <td>{{section.sectionID}}</td>
         <td>{{section.instructor}}</td>
@@ -36,9 +37,11 @@
         <td ng-init="sec = section">
           <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal" ng-click="launchModal(course, section)">Assign Candidates</button>
         </td>
+		<td><a href="#/edit-course/{{course.firebaseId}}">Edit</a></td>
       </tr>
+	  </tbody>
     </table>
-    </div>
+	</div>
     <!-- Modal -->
     <div ng-include="'views/matching-modal.html'"></div>
 </div>

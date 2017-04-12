@@ -5,6 +5,7 @@ app.controller('coursesCtrl', ['$scope', 'firebaseService', 'authService', 'cour
 
   $scope.courses = [];
   $scope.students = [];
+  $scope.assignments = [];
 
   $scope.prettifyDays = function(days) { //MTWRF
     var template = {M:0, T:0, W:0, R:0, F:0};
@@ -20,7 +21,7 @@ app.controller('coursesCtrl', ['$scope', 'firebaseService', 'authService', 'cour
 
     return res;
   };
-  
+	
   function intersects(c_days,s_days) {
 	  for (var c_day in c_days){
 		for (var s_day in s_days) {
@@ -29,42 +30,18 @@ app.controller('coursesCtrl', ['$scope', 'firebaseService', 'authService', 'cour
 	  }
 	  return false;
   }
-
-//   $scope.launchModal = function(course, section) {    
-//     $scope.currentCourse = course;
-//     $scope.currentSection = section;
-//     $scope.currentStudents = $scope.students.slice();
-// 	console.log("Current students from courses-controller: ");
-//     //firebaseService.getCandidates(course.firebaseId, function(assignments) {
-// $.getJson({url: "https://cisc475-ta-database.firebaseio.com/assignments/"+course.firebaseId+"/candidates.json",
-// 		  type: "GET",
-// 		  success: function(result){
-//       	$scope.currentAssignments = result;
-// 	  console.log("Get candidates");
-//       for(var i = 0; i < $scope.currentStudents.length; i++) {
-//         var assigned = false;
-//         for(var j = 0; j < $scope.currentAssignments.length; j++) {
-//           if($scope.currentAssignments[j].section == section.sectionID && $scope.currentStudents[i].firebaseId == $scope.currentAssignments[j].studentId) {
-//             $scope.currentStudents[i].isAssigned = true;
-//             $scope.currentStudents[i].assignmentFbId = $scope.currentAssignments[j].firebaseId;
-//             assigned = true;
-//             break;
-//           }
-//         }
-//         if(!assigned) $scope.currentStudents[i].isAssigned = false;
-//       }
-//       $scope.$apply();
-//     }, function(error) {
-//       toastr.error("Something went wrong getting candidates");
-//     });
-// });
-  //};
+  
+  /*function hideLoading() {
+	  $('.modal-dialog').show();
+	  $('.loading').hide();
+  }*/
 	
 $scope.launchModal = function(course, section) {    
   $scope.currentCourse = course;
   $scope.currentSection = section;
   //$scope.currentStudents = $scope.students.slice();
   $scope.currentStudents = $scope.students;
+  //console.log($scope.assignments);
   var course_days = $scope.currentSection.days;
 	var c_start = new Date(Date.parse("2001/01/01 " + section.startTime) - 25 * 60000);
 	var c_end = new Date(Date.parse("2001/01/01 " + section.endTime) + 15 * 60000);
@@ -74,6 +51,7 @@ $scope.launchModal = function(course, section) {
 	for(var i = 0; i < $scope.currentStudents.length; i++) {
         var student = $scope.currentStudents[i];
 		var schedule = student.schedule;
+		var conflict = false;
 		//console.log("student: " + student.first_name + " " + student.last_name + " #" + i);
         // for each course in student.schedule, check if a course occurs in the same day
         for (var j=0; j < schedule.length; j++){
@@ -87,16 +65,45 @@ $scope.launchModal = function(course, section) {
 			  // remove from list
 			  //console.log("Found someone: " + student.last_name + " Class: " + s_start + "-" + s_end);
 			  $scope.currentStudents.splice(i, 1);
+			  conflict = true;
 		  }
           }
-
         }
+		if(!conflict) {
+			var assigned = false;
+			for(var assignment in $scope.assignments) {
+				Object.keys($scope.assignments[assignment]['candidates']).forEach(function (key) {
+				   var assign_inner = $scope.assignments[assignment]['candidates'][key];
+				   if(assign_inner['section'] == section.sectionID && $scope.currentStudents[i].firebaseId == assign_inner['studentId']) {
+						$scope.currentStudents[i].isAssigned = true;
+						$scope.currentStudents[i].assignmentFbId = $scope.assignments[assignment]['firebaseId'];
+						assigned = true;
+						//break;
+					  }
+				});
+			}
+		}
+		
       }
+	
+		/*console.log("Get candidates");
+		for(var i = 0; i < $scope.currentStudents.length; i++) {
+		var assigned = false;
+			for(var j = 0; j < $scope.assignments.length; j++) {
+              if($scope.assignments[j].section == section.sectionID && $scope.currentStudents[i].firebaseId == $scope.assignments[j].studentId) {
+                $scope.currentStudents[i].isAssigned = true;
+                $scope.currentStudents[i].assignmentFbId = $scope.assignments[j].firebaseId;
+                assigned = true;
+                break;
+              }
+            }
+		if(!assigned) $scope.currentStudents[i].isAssigned = false;
+		}*/
 	  //$.getJSON({url: "https://cisc475-ta-database.firebaseio.com/assignments/"+course.firebaseId+"/candidates.json",
   		  //success: function(result){
-		firebaseService.getCandidates(course.firebaseId, function(assignments) {
+		/*firebaseService.getCandidates(course.firebaseId, function(assignments) {
         	$scope.currentAssignments = assignments;
-          //console.log("Get candidates");
+          console.log("Get candidates");
           for(var i = 0; i < $scope.currentStudents.length; i++) {
             var assigned = false;
             for(var j = 0; j < $scope.currentAssignments.length; j++) {
@@ -109,9 +116,10 @@ $scope.launchModal = function(course, section) {
             }
             if(!assigned) $scope.currentStudents[i].isAssigned = false;
           }
-          $scope.$apply();
-        });
+          //$scope.$apply();
+        });*/
   //});
+  
 };
 
   $scope.removeStudent = function(fbId) {
@@ -202,6 +210,14 @@ $scope.launchModal = function(course, section) {
   firebaseService.getStudents(function(students) {
     $scope.students = students;
     console.log(students);
+    $scope.$apply();
+  }, function(error) {
+    console.log(error);
+  });
+  
+  firebaseService.getAssignments(function(assignments) {
+    $scope.assignments = assignments;
+    console.log(assignments);
     $scope.$apply();
   }, function(error) {
     console.log(error);

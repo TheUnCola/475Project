@@ -118,6 +118,38 @@ app.service("firebaseService", function() {
   };
 
   var castManyToCourse = function(objects) {
+    var courses = {};
+	//For firebase keys in course object
+    for(var key in objects) {
+      var obj = objects[key];
+	  var c = castSingleToCourse(obj, key);
+	  var courseID = c.courseID;
+	  if(courses[c.courseID] != null) courses[c.courseID].push(c);
+      else courses[c.courseID] = new Array(c);
+    }
+    return courses;
+  };
+
+  this.getCourses = function(success, failure) {
+    return db.ref("courses").once("value")
+    .then(function(snapshot) {
+      success(castManyToCourse(snapshot.val()));
+    }, function(error) {
+      failure(error);
+    });
+  };
+  
+  /*var castSingleToCourse = function(obj, key) {
+    var c = new Course(
+      obj.courseID,
+      obj.courseTags,
+      obj.sections
+    );
+    c.firebaseId = key;
+    return c;
+  };
+
+  var castManyToCourse = function(objects) {
     var courses = [];
     for(var key in objects) {
       var obj = objects[key];
@@ -133,7 +165,7 @@ app.service("firebaseService", function() {
     }, function(error) {
       failure(error);
     });
-  };
+  };*/
 
   this.getCourseById = function(id, success, failure){
     return db.ref(`courses/${id}`).once("value")
@@ -201,6 +233,33 @@ app.service("firebaseService", function() {
 
   /* ASSIGNMENT OPERATIONS */
 
+   var castSingleToAssignment = function(obj, key) {
+    var a = new Assignment(
+      obj.candidates
+    );
+    a.firebaseId = key;
+    return a;
+  };
+
+  var castManyToAssignment = function(objects) {
+    var assignments = [];
+    for(var key in objects) {
+      var obj = objects[key];
+      //assignments[key] = obj['candidates'];
+	  assignments.push(castSingleToAssignment(obj, key));
+    }
+    return assignments;
+  };
+  
+  this.getAssignments = function(success, failure) {
+    return db.ref("assignments").once("value")
+    .then(function(snapshot) {
+      success(castManyToAssignment(snapshot.val()));
+    }, function(error) {
+      failure(error);
+    });
+  };  
+  
   var assignmentObjectsToArray = function(assignments) {
     var ret_assignments = [];
     for(var key in assignments) {
