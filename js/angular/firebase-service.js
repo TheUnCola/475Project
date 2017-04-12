@@ -107,7 +107,7 @@ app.service("firebaseService", function() {
 
   /* COURSE OPERATIONS */
 
-  var castSingleToCourse = function(obj, key) {
+  var castSingleToCourseC = function(obj, key) {
     var c = new Course(
       obj.courseID,
       obj.courseTags,
@@ -117,12 +117,12 @@ app.service("firebaseService", function() {
     return c;
   };
 
-  var castManyToCourse = function(objects) {
+  var castManyToCourseC = function(objects) {
     var courses = {};
 	//For firebase keys in course object
     for(var key in objects) {
       var obj = objects[key];
-	  var c = castSingleToCourse(obj, key);
+	  var c = castSingleToCourseC(obj, key);
 	  var courseID = c.courseID;
 	  if(courses[c.courseID] != null) courses[c.courseID].push(c);
       else courses[c.courseID] = new Array(c);
@@ -130,16 +130,16 @@ app.service("firebaseService", function() {
     return courses;
   };
 
-  this.getCourses = function(success, failure) {
+  this.getCoursesC = function(success, failure) {
     return db.ref("courses").once("value")
     .then(function(snapshot) {
-      success(castManyToCourse(snapshot.val()));
+      success(castManyToCourseC(snapshot.val()));
     }, function(error) {
       failure(error);
     });
   };
   
-  /*var castSingleToCourse = function(obj, key) {
+  var castSingleToCourse = function(obj, key) {
     var c = new Course(
       obj.courseID,
       obj.courseTags,
@@ -165,7 +165,7 @@ app.service("firebaseService", function() {
     }, function(error) {
       failure(error);
     });
-  };*/
+  };
 
   this.getCourseById = function(id, success, failure){
     return db.ref(`courses/${id}`).once("value")

@@ -87,7 +87,7 @@ app.controller('finalCtrl', ['$scope', 'firebaseService', 'authService', functio
         console.log(error);
     });
 
-
+	//Removes Final Assignment as well as Candidate Assignment
     $scope.undoFinalAssignment = function(courseFirebaseID, studentFirebaseID, assignmentSection) {
         firebaseService.getAllAssignments(function(object) {
             for (var key in object) {
@@ -100,6 +100,13 @@ app.controller('finalCtrl', ['$scope', 'firebaseService', 'authService', functio
                                 var studentFID = finals[assignment].studentId;
                                 if (section == assignmentSection && studentFID == studentFirebaseID) {
                                     firebaseService.removeFinal(assignment, courseFirebaseID,
+                                        function(result) {
+                                            console.log(result);
+                                        },
+                                        function(error) {
+                                            console.log(error);
+                                        });
+									firebaseService.removeCandidate(assignment, courseFirebaseID,
                                         function(result) {
                                             console.log(result);
                                         },
