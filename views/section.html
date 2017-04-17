@@ -29,10 +29,10 @@
                     <td>{{student.tags}}</td>
                     <td>
                         <button ng-hide="student.isAssigned" id="assignStudent" class="btn btn-success btn-xs" ng-click="$event.stopPropagation(); assignFinal($index, student.firebaseId, currentCourse.firebaseId, currentSection.sectionID)">
-							Assign candidate
+							Assign
 						</button>
 						<button ng-show="student.isAssigned" id="assignStudent" class="btn btn-danger btn-xs" ng-click="$event.stopPropagation(); undoFinalAssignment(currentCourse.firebaseId, student.firebaseId, currentSection.sectionID)">
-							Remove candidate
+							Remove
 						</button>
                     </td>
                     <td>
