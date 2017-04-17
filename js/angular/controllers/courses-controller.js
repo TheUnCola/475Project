@@ -30,52 +30,6 @@ app.controller('coursesCtrl', ['$scope', 'firebaseService', 'authService', 'cour
 	  }
 	  return false;
   }
-  
-  /*function hideLoading() {
-	  $('.modal-dialog').show();
-	  $('.loading').hide();
-  }*/
-	
-$scope.launchModal = function(course, section) {    
-	$scope.currentCourse = course;
-	$scope.currentSection = section;
-	$scope.currentStudents = $scope.students;
-	var course_days = $scope.currentSection.days;
-	var c_start = new Date(Date.parse("2001/01/01 " + section.startTime) - 25 * 60000);
-	var c_end = new Date(Date.parse("2001/01/01 " + section.endTime) + 15 * 60000);
-	for(var i = 0; i < $scope.currentStudents.length; i++) {
-		var student = $scope.currentStudents[i];
-		var schedule = student.schedule;
-		var conflict = false;
-		// for each course in student.schedule, check if a course occurs in the same day
-		for (var j=0; j < schedule.length; j++){
-			if(intersects(course_days,schedule[j].days)) {
-				var s_start = new Date(Date.parse("2001/01/01 " + student.schedule[j].start_time));
-				var s_end = new Date(Date.parse("2001/01/01 " + student.schedule[j].end_time));
-				if((s_start <= c_end && s_start >= c_start) 
-					|| (s_end >= c_start && s_end <= c_end) 
-					|| (s_end >= c_end && s_start <= c_start)){
-					// remove from list
-					$scope.currentStudents.splice(i, 1);
-					conflict = true;
-				}
-			}
-		}
-		if(!conflict) {
-			var assigned = false;
-			for(var assignment in $scope.assignments) {
-				Object.keys($scope.assignments[assignment]['final']).forEach(function (key) {
-					var assign_inner = $scope.assignments[assignment]['final'][key];
-					if(assign_inner['section'] == section.sectionID && $scope.currentStudents[i].firebaseId == assign_inner['studentId']) {
-						$scope.currentStudents[i].isAssigned = true;
-						$scope.currentStudents[i].assignmentFbId = $scope.assignments[assignment]['firebaseId'];
-						assigned = true;
-					}
-				});
-			}
-		}
-	}
-};
 
   $scope.removeStudent = function(fbId) {
     for(var i = 0; i < $scope.currentStudents.length; i++) {
