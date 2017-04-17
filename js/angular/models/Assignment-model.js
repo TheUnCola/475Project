@@ -1,5 +1,6 @@
 class Assignment {
-    constructor(candidates=[]) {
+    constructor(candidates=[],final=[]) {
         this.candidates = candidates;
+		this.final = final;
     }
 }

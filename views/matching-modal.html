@@ -1,5 +1,4 @@
 <div class="modal fade" id="myModal" role="dialog">
-    <!--<div class="loading" ng-init="setTimeout(hideLoading,3000)"><div>-->
 	<div class="modal-dialog modal-lg">
     <div class="modal-content">
         <div class="modal-header">
@@ -92,11 +91,11 @@
                                 <p ng-show="!student.isUndergrad">Graduate</p></td>
                                 <td>{{student.tags}}</td>
                                 <td>
-                                    <button ng-hide="student.isAssigned" id="assignStudent" class="btn btn-success btn-xs" ng-click="$event.stopPropagation(); assignCandidate($index, student.firebaseId, currentCourse.firebaseId, currentSection.sectionID)">
+                                    <button ng-hide="student.isAssigned" id="assignStudent" class="btn btn-success btn-xs" ng-click="$event.stopPropagation(); assignFinal($index, student.firebaseId, currentCourse.firebaseId, currentSection.sectionID)">
                                         Assign candidate
                                     </button>
 
-                                    <button ng-show="student.isAssigned" id="assignStudent" class="btn btn-danger btn-xs" ng-click="$event.stopPropagation(); removeCandidate($index, student.assignmentFbId, currentCourse.firebaseId)">
+                                    <button ng-show="student.isAssigned" id="assignStudent" class="btn btn-danger btn-xs" ng-click="$event.stopPropagation(); removeFinal($index, student.assignmentFbId, currentCourse.firebaseId)">
                                         Remove candidate
                                     </button>
                                 </td>

@@ -1,0 +1,69 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="panel-title">{{course.courseID}}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="panel-body">
+        <table class="table table-condensed">
+            <thead>
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Type</th>
+                    <th>Tags</th>
+                    <th>Assign</th>
+                    <th>Hide</th>
+                </tr>
+            </thead>
+            <tbody ng-init="showExtraInfo = false" ng-click="showExtraInfo = !showExtraInfo" ng-repeat="student in currentStudents | orderBy:'+last_name' | filter:showIsUndergrad | hasTags:searchTags | courseTaken:searchCourse | filter:showIsAssigned track by student.firebaseId">
+                <tr class="hoverable">
+                    <td>{{student.first_name}}</td>
+                    <td>{{student.last_name}}</td>
+                    <td>
+                        <p ng-show="student.isUndergrad">Undergrad</p>
+                        <p ng-show="!student.isUndergrad">Graduate</p>
+                    </td>
+                    <td>{{student.tags}}</td>
+                    <td>
+                        <button ng-hide="student.isAssigned" id="assignStudent" class="btn btn-success btn-xs" ng-click="$event.stopPropagation(); assignFinal($index, student.firebaseId, currentCourse.firebaseId, currentSection.sectionID)">
+							Assign candidate
+						</button>
+						<button ng-show="student.isAssigned" id="assignStudent" class="btn btn-danger btn-xs" ng-click="$event.stopPropagation(); undoFinalAssignment(currentCourse.firebaseId, student.firebaseId, currentSection.sectionID)">
+							Remove candidate
+						</button>
+                    </td>
+                    <td>
+                        <a href="" ng-click="removeStudent(student.firebaseId)">
+                            <button class="btn btn-warning btn-xs"> Hide </button>
+                        </a>
+                    </td>
+                </tr>
+                <tr ng-repeat-end ng-show="showExtraInfo">
+                    <td colspan="6" style="padding:0">
+                        <table class="table table-condensed table-striped" style="padding:0 margin:0 !important">
+                            <thead>
+                                <tr>
+                                    <th>Course</th>
+                                    <th>Start Time</th>
+                                    <th>End Time</th>
+                                    <th>Days</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="courseEntry in student.schedule">
+                                    <td>{{courseEntry.id}}</td>
+                                    <td>{{courseEntry.start_time}}</td>
+                                    <td>{{courseEntry.end_time}}</td>
+                                    <td>{{prettifyDays(courseEntry.days)}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

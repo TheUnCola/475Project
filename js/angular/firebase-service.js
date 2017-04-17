@@ -235,7 +235,8 @@ app.service("firebaseService", function() {
 
    var castSingleToAssignment = function(obj, key) {
     var a = new Assignment(
-      obj.candidates
+      obj.candidates,
+	  obj['final']
     );
     a.firebaseId = key;
     return a;
@@ -252,7 +253,7 @@ app.service("firebaseService", function() {
   };
   
   this.getAssignments = function(success, failure) {
-    return db.ref("assignments").once("value")
+	return db.ref(`assignments`).once("value")
     .then(function(snapshot) {
       success(castManyToAssignment(snapshot.val()));
     }, function(error) {
@@ -316,7 +317,7 @@ app.service("firebaseService", function() {
 
   // returns all the studentIDs of the final choices for the given firebase courseID
   this.getFinalAssignment = function(courseID, success, failure) {
-    return db.ref(`assignments/${courseID}/final`).once("value")
+    return db.ref(`assignments/${courseID}/final`).orderByKey().once("value")
     .then(function(snapshot) {
       success(assignmentObjectsToArray(snapshot.val()));
     }, function(error) {
