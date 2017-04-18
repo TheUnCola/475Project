@@ -49,3 +49,13 @@ tr.hoverable:hover {
 .no-margin-table {
   margin: 0;
 }
+
+.panel-title span {
+	font-weight:bold;
+	margin-right:10px;
+}
+
+.back {
+	text-align:right;
+	font-weight:bold;
+}

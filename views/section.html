@@ -1,8 +1,13 @@
+<div class="back"><a href="#/courses"><- Back</a></div>
 <div class="panel panel-default">
-    <div class="panel-heading">
+	<div class="panel-heading">
         <div class="row">
             <div class="col-md-12">
-                <h3 class="panel-title">{{course.courseID}}</h3>
+                <h3 class="panel-title">
+					<span>{{courses.courseID}}</span>
+					<span>Section: {{currentSection.sectionID}}</span>
+					<span>Time: {{currentSection.startTime}}-{{currentSection.endTime}}</span>
+				</h3>
             </div>
         </div>
     </div>

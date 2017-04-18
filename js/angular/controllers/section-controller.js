@@ -139,6 +139,7 @@ app.controller('sectionCtrl', ['$scope', '$routeParams', 'firebaseService', 'aut
 		}, function(error) {
 			toastr.error("Uh oh, something went wrong!");
 		});
+		location.reload();
     };
 
     $scope.removeFinal = function(idx, assignmentFbId, courseFbId) {
@@ -155,6 +156,7 @@ app.controller('sectionCtrl', ['$scope', '$routeParams', 'firebaseService', 'aut
         }, function(error) {
             toastr.error("Uh oh, something went wrong!");
         });
+		location.reload();
     };
 	
 	//Removes Final Assignment as well as Candidate Assignment
