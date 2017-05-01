@@ -1,10 +1,10 @@
 <a class="btn btn-primary float-right" href="#/add-course">Add Course</a>
 <h1>Courses</h1>
-<div class="panel panel-default" ng-repeat="(key,courselist) in courses">
+<div class="panel panel-default" ng-repeat="key in courses | toArray | orderBy : '$key'">
   <div class="panel-heading">
     <div class="row">
       <div class="col-md-6">
-        <h3 class="panel-title">{{key}}</h3>
+        <h3 class="panel-title">{{key.$key}}</h3>
       </div>
     </div>
   </div>
@@ -24,7 +24,7 @@
 		<th>&nbsp;</th>
       </tr>
 	  </thead>
-	  <tbody ng-repeat="course in courselist">
+	  <tbody ng-repeat="course in key">
       <tr ng-repeat="section in course.sections">
         <td>{{section.sectionID}}</td>
         <td>{{section.instructor}}</td>
