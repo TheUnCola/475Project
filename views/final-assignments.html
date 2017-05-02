@@ -24,13 +24,15 @@
   <div class="panel-body">
     <table class="table table-condensed table-striped sections-table">
       <tr>
-        <th>Student Name</th>
+        <th>Last Name</th>
+        <th>First Name</th>
         <th>Section</th>
         <th>Student ID</th>
         <th>Remove Assignment</th>
       </tr>
       <tr ng-repeat="student in finalAssignment[1]">
-        <td>{{student.name}}</td>
+        <td>{{student.lastName}}</td>
+        <td>{{student.firstName}}</td>
         <td>{{student.section}}</td>
         <td>{{student.studentID}}</td>
         <td><button class="btn btn-danger btn-xs" ng-click="undoFinalAssignment(finalAssignment[0].firebaseId, student.firebaseID, student.section)">Remove</button>
@@ -51,16 +53,18 @@
   <div class="panel-body" ng-hide="content">
     <table class="table table-condensed table-striped sections-table">
       <tr>
-        <th>Student</th>
+        <th>Last Name</th>
+        <th>First Name</th>
         <th>Course</th>
         <th>Section</th>
         <th>Number of Students</th>
       </tr>
       <tr ng-repeat="student in assignedStudents">
-        <td>{{student[0]}}</td>
         <td>{{student[1]}}</td>
         <td>{{student[2]}}</td>
         <td>{{student[3]}}</td>
+        <td>{{student[4]}}</td>
+        <td>{{student[5]}}</td>
       </tr>
     </table>
   </div>
