@@ -13,11 +13,12 @@
     </div>
   </div>
   <br>
-<div class="panel panel-default" ng-repeat="finalAssignment in courseAssignments" ng-show="content">
+<div class="panel panel-default" ng-repeat="finalAssignment in courseAssignments | orderBy : 'this[0].courseID'" ng-show="content">
   <div class="panel-heading">
     <div class="row">
       <div class="col-md-12">
         <h3 class="panel-title">{{finalAssignment[0].courseID}}</h3>
+        <!-- <h3 class="panel-title">{{finalAssignment[0].courseID}}</h3> -->
       </div>
     </div>
   </div>
