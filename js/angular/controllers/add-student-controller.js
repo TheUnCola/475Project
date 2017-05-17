@@ -78,10 +78,12 @@ app.controller('addStudentCtrl', ['$scope', 'firebaseService', 'authService', fu
     };
 
     function areReqFieldsFilled() {
-        return !($scope.student.id == "" || $scope.student.schedule.length == 0 || isMissingScheduleInformation());
+        return !($scope.student.id == "" || isMissingScheduleInformation());
     };
 
     function isMissingScheduleInformation() {
+        if($scope.student.schedule.length == 0){return false;}
+        
         for (var i = 0; i < $scope.student.schedule.length; i++) {
             var course = $scope.student.schedule[i];
             if (course.id == "" || course.start_time.length < 7 || course.end_time.length < 7) {
