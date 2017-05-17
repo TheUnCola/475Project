@@ -37,16 +37,16 @@
 <table class="table table-bordered">
   <thead>
     <tr>
-      <th>First Name</th>
       <th>Last Name</th>
+      <th>First Name</th>
       <th>Email</th>
       <th></th>
     </tr>
   </thead>
   <tbody>
     <tr class="hoverable" ng-init="showExtraInfo = false" ng-click="showExtraInfo = !showExtraInfo" ng-repeat-start="student in students | filter:{first_name: firstName} | filter:{last_name: lastName} | filter:{tags: searchTags} | filter:showIsUndergrad | orderBy: 'last_name' track by student.firebaseId">
-      <td>{{student.first_name}}</td>
       <td>{{student.last_name}}</td>
+      <td>{{student.first_name}}</td>
       <td>{{student.email}}</td>
       <td><a href="#/edit-student/{{student.firebaseId}}">Edit</a></td>
     </tr>
